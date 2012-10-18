@@ -1,3 +1,22 @@
-
-{% block content %}
-{% endblock %}
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+        <title>{% block title %} Mobile Twitter Square {% endblock %}</title>
+        {% block head_extend %}
+        <style>
+            body {font-family:arial,sans-serif}
+            a{text-decoration:none;color:#3a64b0;}
+            a:hover {text-decoration:underline;}
+            a:visited {color: purple;text-decoration: underline;}
+            li {border-bottom:1px solid #EBEBEB;line-height:21px;*line-height:24px;line-height:20px\0;vertical-align:middle;}
+            
+        </style>
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
