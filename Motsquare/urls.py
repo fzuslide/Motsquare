@@ -7,6 +7,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 
 from Motsquare.views import square
+from Motsquare.views import demo2
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -27,6 +28,8 @@ urlpatterns = patterns('',
         # url(r'^admin/', include(admin.site.urls)),
 
         (r'^demo1.html', square.demo1),
+        (r'^demo2.html', square.demo2),
+        (r'^ajax/demo2/', demo2.send),
         )
 
 

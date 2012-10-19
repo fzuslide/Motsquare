@@ -12,3 +12,5 @@ def square_list(requset):
 def demo1(request):
     return render_to_response('demo1.html',{"DEMO1_SERVER_PORT": settings.DEMO1_SERVER_PORT})
 
+def demo2(request):
+    return render_to_response('demo2.html',{"DEMO2_SERVER_PORT": settings.DEMO2_SERVER_PORT})

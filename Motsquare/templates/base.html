@@ -11,11 +11,13 @@
             a:hover {text-decoration:underline;}
             a:visited {color: purple;text-decoration: underline;}
             li {border-bottom:1px solid #EBEBEB;line-height:21px;*line-height:24px;line-height:20px\0;vertical-align:middle;}
-            
         </style>
         {% endblock %}
     </head>
     <body>
+        {% block menu %}
+        <a href="/" style="text-decoration:underline">Home</a>
+        {% endblock %}
         {% block content %}
         {% endblock %}
     </body>
