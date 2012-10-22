@@ -15,7 +15,7 @@ def send(request):
         send_message(msg)
     return HttpResponse(simplejson.dumps({'ok':True}), mimetype="application/json")
     
-def send_message(msg, channel='ch:demo2'):
+def send_message(msg, channel='ch:demo3'):
     uid = uuid1().hex
     envelope = {'id': uid, 'msg': msg}
     publisher.publish(channel, simplejson.dumps(envelope))

@@ -1,7 +1,22 @@
 # Django settings for Motsquare project.
 
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+
+DEMO1_SERVER_PORT = 15001
+DEMO2_SERVER_PORT = 15002
+DEMO3_SERVER_PORT = 15003
+
+# Redis
+PUBSUB_REDIS_HOST = '127.0.0.1'
+PUBSUB_REDIS_PORT = 6379
+
+
+
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -90,7 +105,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -106,6 +121,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+
+    os.path.join(PROJECT_PATH, 'templates')
 )
 
 INSTALLED_APPS = (
@@ -149,3 +166,5 @@ LOGGING = {
         },
     }
 }
+
+

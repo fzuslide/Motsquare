@@ -14,3 +14,6 @@ def demo1(request):
 
 def demo2(request):
     return render_to_response('demo2.html',{"DEMO2_SERVER_PORT": settings.DEMO2_SERVER_PORT})
+
+def demo3(request):
+    return render_to_response('demo3.html',{"DEMO3_SERVER_PORT": settings.DEMO3_SERVER_PORT})
