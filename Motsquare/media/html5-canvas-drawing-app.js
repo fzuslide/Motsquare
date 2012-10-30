@@ -14,7 +14,6 @@
 
 
 var canvas;
-var context;
 var canvasWidth = 500;
 var canvasHeight = 300;
 var padding = 25;
@@ -27,10 +26,7 @@ var outlineImage = new Image();
 var crayonImage = new Image();
 var markerImage = new Image();
 var eraserImage = new Image();
-var crayonBackgroundImage = new Image();
-var markerBackgroundImage = new Image();
-var eraserBackgroundImage = new Image();
-var crayonTextureImage = new Image();
+var backgroundImage = new Image();
 var clickX = new Array();
 var clickY = new Array();
 var clickColor = new Array();
@@ -71,6 +67,14 @@ var paint_simpleColors;
 var canvas_simpleColors;
 var context_simpleColors;
 var curColor_simpleColors = colorPurple;
+
+
+
+// Calls the redraw function after all neccessary resources are loaded.
+//resourceLoaded = function () {
+//    redrawSimpleColors();
+//},
+
 
 function prepareSimpleColorsCanvas()
 {
@@ -136,6 +140,10 @@ function prepareSimpleColorsCanvas()
                 clickColor_simpleColors = new Array();
                 clearCanvas_simpleColors();
             });
+
+
+    //backgroundImage.onload = resourceLoaded;
+    backgroundImage.src = "/media/image/deny_by_firewall.png";
 }
 
 function addClickSimpleColors(x, y, dragging)
@@ -161,6 +169,7 @@ function redrawSimpleColors()
     context_simpleColors.lineJoin = "round";
     context_simpleColors.lineWidth = radius;
 
+    context_simpleColors.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
     for(var i=0; i < clickX_simpleColors.length; i++)
     {
         context_simpleColors.beginPath();
@@ -174,6 +183,7 @@ function redrawSimpleColors()
         context_simpleColors.strokeStyle = clickColor_simpleColors[i];
         context_simpleColors.stroke();
     }
+
 }
 
 
