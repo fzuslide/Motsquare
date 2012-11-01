@@ -20,3 +20,6 @@ def demo3(request):
 
 def demo4(request):
     return render_to_response('demo4.html',)
+
+def demo5(request):
+    return render_to_response('demo5.html',)

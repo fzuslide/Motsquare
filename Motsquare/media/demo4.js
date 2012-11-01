@@ -142,8 +142,6 @@ function prepareSimpleColorsCanvas()
             });
 
 
-    //backgroundImage.onload = resourceLoaded;
-    backgroundImage.src = "/media/image/deny_by_firewall.png";
 }
 
 function addClickSimpleColors(x, y, dragging)
@@ -169,7 +167,7 @@ function redrawSimpleColors()
     context_simpleColors.lineJoin = "round";
     context_simpleColors.lineWidth = radius;
 
-    context_simpleColors.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+    //context_simpleColors.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
     for(var i=0; i < clickX_simpleColors.length; i++)
     {
         context_simpleColors.beginPath();
