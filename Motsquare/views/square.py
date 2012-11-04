@@ -23,3 +23,6 @@ def demo4(request):
 
 def demo5(request):
     return render_to_response('demo5.html',)
+
+def demo6(request):
+    return render_to_response('demo6.html',{"DEMO6_SERVER_PORT": settings.DEMO6_SERVER_PORT})

@@ -1,0 +1,77 @@
+body {
+    background: #fff;
+    font-size: 62.5%;
+    font-family: Arial, sans-serif;
+    padding: 0; margin: 0;
+}
+
+#chat { height: 300px; overflow: auto; width: 85%; border: 1px solid #eee; font: 13px Helvetica, Arial; }
+#chat p { padding: 8px; margin: 0; }
+#chat p:nth-child(odd) { background: #F6F6F6; }
+#form { width: 80%; background: #333; padding: 5px 10px; display: none; }
+#form input[type=text] { width: 70%; padding: 5px; background: #fff; border: 1px solid #fff; }
+#form input[type=submit] { cursor: pointer; background: #999; border: none; padding: 6px 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; margin-left: 5px; text-shadow: 0 1px 0 #fff; }
+#form input[type=submit]:hover { background: #A2A2A2; }
+#form input[type=submit]:active { position: relative; top: 2px; }
+
+
+.content {
+    padding: 20px;
+}
+#drop-files {
+    width: 400px;
+    height: 125px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    border: 4px dashed rgba(0,0,0,0.2);
+    padding: 75px 0 0 0;
+    text-align: center;
+    font-size: 2em;
+    float: left;
+    font-weight: bold;
+    margin: 0 20px 20px 0;
+}
+
+#upload-button {
+    position: absolute;
+    top: 190px;
+    z-index: 9999;
+    width: 300px;
+    margin: 50px 0 0 0;
+    display: none;
+}
+
+#upload-button .ss-upload {
+    font-size: 0.7em;
+}
+
+#upload-button a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #4bc1e3;
+    border-radius: 10px;
+}
+
+#upload-info {
+    display: none;
+    width: 200px;
+    text-align: center;
+    margin: -50px 0 0 0;
+    background: white;
+    border-radius: 10px;
+    font-size: 1.1em;
+    padding: 4px 40px;
+    position: relative;
+    left: 55px;
+}
+#upload-button a:hover {
+    box-shadow: 0 0 1000px 62px rgba(255, 255, 255, 1), inset 0 -5px 40px 0px #D84332;	
+    background-color: #DC5252;
+}
+
+
+
+
