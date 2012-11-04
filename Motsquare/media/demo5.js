@@ -4,9 +4,10 @@ $(document).ready(function() {
 	// Drop the item in the drop box.
 	jQuery.event.props.push('dataTransfer');
 	
+	var filename = "";
 	var z = -40;
 	// The number of images to display
-	var maxFiles = 5;
+	var maxFiles = 1;
 	var errMessage = 0;
 	
 	// Get all of the data URIs and put them in an array
@@ -16,36 +17,23 @@ $(document).ready(function() {
 	$('#drop-files').bind('drop', function(e) {
 			
 		// Stop the default action, which is to redirect the page
-		// To the dropped file
+		// To the drop file
 		
 		var files = e.dataTransfer.files;
 		
-		// Show the upload holder
-		$('#uploaded-holder').show();
-		
 		// For each file
 		$.each(files, function(index, file) {
-						
-			// Some error messaging
-			//if (!(files[index].type.match('pdf.*') 
-                        // || files[index].type.match('image.*') 
-                        // || files[index].type.match('doc.*') 
-                        // || files[index].type.match('ppt.*') 
-			//   )) {
-			//	
-			//	if(errMessage == 0) {
-			//		$('#drop-files').html('File Type Error');
-			//		++errMessage
-			//	}
-			//	return false;
-			//} 
-			// Check length of the total image elements
-			
-			if($('#dropped-files > .image').length < maxFiles) {
+								
+			if(dataArray.length < maxFiles) {
 				// Change position of the upload button so it is centered
-				var imageWidths = ((220 + (40 * $('#dropped-files > .image').length)) / 2) - 20;
+				var imageWidths = ((220 + (40 * $('#drop-files > .image').length)) / 2) - 40;
 				$('#upload-button').css({'left' : imageWidths+'px', 'display' : 'block'});
-			}
+			}else{
+			   return false;
+                        }
+
+                        // Hide  drop info 
+                        $('#drop-info').css({'display' : 'none'});
 			
 			// Start a new instance of FileReader
 			var fileReader = new FileReader();
@@ -55,6 +43,7 @@ $(document).ready(function() {
 					
 					return function(e) { 
 						
+					        filename = file.name;
 						// Push the data URI into an array
 						dataArray.push({name : file.name, value : this.result});
 						
@@ -64,26 +53,8 @@ $(document).ready(function() {
 						
 						
 						// Just some grammatical adjustments
-						if(dataArray.length == 1) {
-							$('#upload-button span').html("1 file to be uploaded");
-						} else {
-							$('#upload-button span').html(dataArray.length+" files to be uploaded");
-						}
-						// Place extra files in a list
-						if($('#dropped-files > .image').length < maxFiles) { 
-							// Place the image inside the dropzone
-							$('#dropped-files').append('<div class="image" style="left: '+z+'px; background: url('+image+'); background-size: cover;"> </div>'); 
-						}
-						else {
-							
-							$('#extra-files .number').html('+'+($('#file-list li').length + 1));
-							// Show the extra files dialogue
-							$('#extra-files').show();
-							
-							// Start adding the file name to the file list
-							$('#extra-files #file-list ul').append('<li>'+file.name+'</li>');
-							
-						}
+                                                $('#upload-info').html( file.name  + " to be uploaded");
+                                                $('#upload-info').css({"display": "block"});
 					}; 
 					
 				})(files[index]);
@@ -98,20 +69,15 @@ $(document).ready(function() {
 	
 	function restartFiles() {
 	
-		// This is to set the loading bar back to its default state
-		$('#loading-bar .loading-color').css({'width' : '0%'});
-		$('#loading').css({'display' : 'none'});
-		$('#loading-content').html(' ');
 		// --------------------------------------------------------
 		
 		// We need to remove all the images and li elements as
 		// appropriate. We'll also make the upload button disappear
 		
 		$('#upload-button').hide();
-		$('#dropped-files > .image').remove();
-		$('#extra-files #file-list li').remove();
-		$('#extra-files').hide();
-		$('#uploaded-holder').hide();
+                $('#upload-info').css({"display": "none"});
+		$('#drop-files > .image').remove();
+                $('#drop-info').html("Drop Files Here");
 	
 		// And finally, empty the array/set z to -40
 		dataArray.length = 0;
@@ -122,56 +88,20 @@ $(document).ready(function() {
 	
 	$('#upload-button .upload').click(function() {
 		
-		$("#loading").show();
-		var totalPercent = 100 / dataArray.length;
-		var x = 0;
-		var y = 0;
-		
-		$('#loading-content').html('Uploading '+dataArray[0].name);
+		$('#upload-button').hide();
 		
 		$.each(dataArray, function(index, file) {	
+                        $('#drop-info').html( file.name  + " is uploading!");
+                        $('#drop-info').css({'display' : 'block'});
 			
 			$.post('/demo5/upload/', dataArray[index], function(data) {
 			
-				var fileName = dataArray[index].name;
-				++x;
-				
-				// Change the bar to represent how much has loaded
-				$('#loading-bar .loading-color').css({'width' : totalPercent*(x)+'%'});
-				
-				if(totalPercent*(x) == 100) {
-					// Show the upload is complete
-					$('#loading-content').html('Uploading Complete!');
-					
-					// Reset everything when the loading is completed
-					setTimeout(restartFiles, 500);
-					
-				} else if(totalPercent*(x) < 100) {
-				
-					// Show that the files are uploading
-					$('#loading-content').html('Uploading '+fileName);
-				
-				}
-				
-				// Show a message showing the file URL.
-				var dataSplit = data.split(':');
-				if(dataSplit[1] == 'uploaded successfully') {
-					var realData = '<li><a href="images/'+dataSplit[0]+'">'+fileName+'</a> '+dataSplit[1]+'</li>';
-					
-					$('#uploaded-files').append('<li><a href="images/'+dataSplit[0]+'">'+fileName+'</a> '+dataSplit[1]+'</li>');
-				
-					// Add things to local storage 
-					if(window.localStorage.length == 0) {
-						y = 0;
-					} else {
-						y = window.localStorage.length;
-					}
-					
-					window.localStorage.setItem(y, realData);
-				
-				} else {
-					$('#uploaded-files').append('<li><a href="images/'+data+'. File Name: '+dataArray[index].name+'</li>');
-				}
+			       if (data.ok){
+			          alert('ok');
+                               }else{
+			          alert('fail');
+                               }
+                               restartFiles();
 				
 			});
 		});
@@ -190,27 +120,6 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	// For the file list
-	$('#extra-files .number').toggle(function() {
-		$('#file-list').show();
-	}, function() {
-		$('#file-list').hide();
-	});
+	$('#drop-files #upload-button .delete').click(restartFiles);
 	
-	$('#dropped-files #upload-button .delete').click(restartFiles);
-	
-	// Append the localstorage the the uploaded files section
-	if(window.localStorage.length > 0) {
-		$('#uploaded-files').show();
-		for (var t = 0; t < window.localStorage.length; t++) {
-			var key = window.localStorage.key(t);
-			var value = window.localStorage[key];
-			// Append the list items
-			if(value != undefined || value != '') {
-				$('#uploaded-files').append(value);
-			}
-		}
-	} else {
-		$('#uploaded-files').hide();
-	}
 });

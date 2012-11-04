@@ -11,20 +11,21 @@ from django.http import HttpResponse
 
 
 def upload(request):
+    # save the origin file
     buf = StringIO.StringIO()
-    print request.POST['value']
-    print dir(request.POST['value'])
     buf.write(request.POST['value'])
     buf.seek(0)
-    filename = request.POST['name']
-    content_type = filename.split('.')[-1]
+    origin_filename = request.POST['name']
+    content_type = origin_filename.split('.')[-1]
     content = buf.read()
+    content = content.split(',')[1]
     content = base64.decodestring(content)
-    filename = hashlib.md5(content).hexdigest() + '.' + content_type
+    origin_filename = hashlib.md5(content).hexdigest() + '.' + content_type
 
-    f = open(os.path.join(settings.PROJECT_PATH, 'media/upload/', filename), "wa+")
+    f = open(os.path.join(settings.PROJECT_PATH, 'media/upload/', origin_filename), "wa+")
     f.write(content)
     f.close()
+    
 
 
     return HttpResponse(simplejson.dumps({'ok':True}), mimetype="application/json")
