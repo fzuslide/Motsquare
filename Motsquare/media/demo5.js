@@ -53,8 +53,8 @@ $(document).ready(function() {
 						
 						
 						// Just some grammatical adjustments
-                                                $('#upload-info').html( file.name  + " to be uploaded");
-                                                $('#upload-info').css({"display": "block"});
+                        $('#upload-info').html( file.name  + " to be uploaded");
+                        $('#upload-info').css({"display": "block"});
 					}; 
 					
 				})(files[index]);
