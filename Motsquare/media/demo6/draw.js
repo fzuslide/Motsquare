@@ -13,34 +13,21 @@
 // limitations under the License.
 
 
-var canvasWidth = 500;
-var canvasHeight = 300;
-var colorPurple = "#cb3594";
-var colorGreen = "#659b41";
-var colorYellow = "#ffcf33";
-var colorBrown = "#986928";
-var backgroundImage = new Image();
-
-var clickX_simpleColors = new Array();
-var clickY_simpleColors = new Array();
-var clickDrag_simpleColors = new Array();
-var clickColor_simpleColors = new Array();
-var paint_simpleColors;
-var canvas_simpleColors;
-var context_simpleColors;
-var curColor_simpleColors = colorPurple;
-
 
 
 // Calls the redraw function after all neccessary resources are loaded.
-//resourceLoaded = function () {
-//    redrawSimpleColors();
-//},
+function resourceLoaded()
+{
+	if(++curLoadResNum >= totalLoadResources){
+        redrawSimpleColors();
+	}
+}
 
-
-function prepareSimpleColorsCanvas()
+function prepareSimpleColorsCanvas(background_src, canvasWidth, canvasHeight)
 {
     // Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
+    $('#canvasSimpleColorsDiv').css({"width": canvasWidth, "height": canvasHeight});
+    $('#canvasSimpleColorsDiv').show()
     var canvasDiv = document.getElementById('canvasSimpleColorsDiv');
     canvas_simpleColors = document.createElement('canvas');
     canvas_simpleColors.setAttribute('width', canvasWidth);
@@ -52,14 +39,23 @@ function prepareSimpleColorsCanvas()
     }
     context_simpleColors = canvas_simpleColors.getContext("2d");
 
+
+    //Load images
+    // -----------
+    backgroundImage.onload = function() { resourceLoaded(); 
+    };
+    backgroundImage.src = background_src;
+
+
+
     // Add mouse events
     // ----------------
     $('#canvasSimpleColors').mousedown(function(e)
             {
                 // Mouse down location
+                console.log("mousedown");
                 var mouseX = e.pageX - this.offsetLeft;
                 var mouseY = e.pageY - this.offsetTop;
-
                 paint_simpleColors = true;
                 addClickSimpleColors(mouseX, mouseY, false);
                 redrawSimpleColors();
@@ -75,10 +71,13 @@ function prepareSimpleColorsCanvas()
     $('#canvasSimpleColors').mouseup(function(e){
         paint_simpleColors = false;
         redrawSimpleColors();
+        draw_send(background_src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+
     });
 
     $('#canvasSimpleColors').mouseleave(function(e){
         paint_simpleColors = false;
+        draw_send(background_src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
     });
 
     $('#choosePurpleSimpleColors').mousedown(function(e){
@@ -129,7 +128,8 @@ function redrawSimpleColors()
     context_simpleColors.lineJoin = "round";
     context_simpleColors.lineWidth = radius;
 
-    //context_simpleColors.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+    context_simpleColors.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+
     for(var i=0; i < clickX_simpleColors.length; i++)
     {
         context_simpleColors.beginPath();
@@ -144,7 +144,5 @@ function redrawSimpleColors()
         context_simpleColors.stroke();
     }
 
+
 }
-
-
-prepareSimpleColorsCanvas();

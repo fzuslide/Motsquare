@@ -7,6 +7,8 @@ import Image
 import hashlib
 import StringIO
 import commands
+from uuid import uuid1
+from redis import Redis
 from django.conf import settings
 from django.utils import simplejson
 from django.http import HttpResponse
@@ -14,6 +16,29 @@ from django.http import HttpResponse
 
 from utils.DocumentConverter import DocumentConverter
 
+
+publisher = Redis(host=settings.PUBSUB_REDIS_HOST, port=settings.PUBSUB_REDIS_PORT)
+
+def send(request):
+    args = request.POST
+    msg_info = {}
+    if args.get("msg_type") == "draw":
+        for k in args.keys():
+            if k.endswith('[]'):
+                msg_info[k.replace('[]', '')] = args.getlist(k)
+            else:
+                msg_info[k] = args.get(k)
+    else:
+        msg_info['msg'] = args.get['msg']
+
+    if msg_info:
+        send_message(msg_info)
+    return HttpResponse(simplejson.dumps({'ok':True}), mimetype="application/json")
+    
+def send_message(msg_info, channel='ch:demo6'):
+    uid = uuid1().hex
+    envelope = {'id': uid, 'msg_type': msg_info.pop('msg_type', ''), 'data': msg_info}
+    publisher.publish(channel, simplejson.dumps(envelope))
 
 
 def upload(request):

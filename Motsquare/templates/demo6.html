@@ -1,49 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="/media/demo6.css" />
+<link rel="stylesheet" type="text/css" href="/media/demo6/style.css" />
 <script src="/media/demo1.js"></script> <!-- for ie -->
 <script src="/media/jquery-1.8.2.min.js"></script>
 <script src="http://cdn.socket.io/stable/socket.io.js"></script>
-<script src="/media/demo6.js"></script>
+<script src="/media/demo6/upload.js"></script>
 
-
-<script>
-    function message(obj){
-        var el = document.createElement('p');
-        if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
-        else if ('message' in obj) el.innerHTML = '<b>MsgID:' + esc(obj.message.id) + '</b> Content: ' + esc(obj.message.msg);
-        document.getElementById('chat').appendChild(el);
-        document.getElementById('chat').scrollTop = 1000000;
-    }
-
-    function send(){
-        var val = document.getElementById('text').value;
-        $.post('ajax/demo6/', {msg: val }, function(response) {
-            if (response.ok){
-                document.getElementById('text').value = '';
-                } else {
-                alert('send error');
-                }
-
-          });
-    }
-
-    function esc(msg){
-        return String(msg).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    };
-
-    /*var socket = new io.Socket(null, {port: {{ DEMO6_SERVER_PORT }}, rememberTransport: false});
-    socket.connect();
-    socket.on('message', function(obj){
-        if ('buffer' in obj){
-            document.getElementById('form').style.display='block';
-            document.getElementById('chat').innerHTML = '';
-
-            for (var i in obj.buffer) message(obj.buffer[i]);
-        } else message(obj);
-    });
-    */
-</script>
 
 <h4>Demo6 (canvas sync)</h4>
 
@@ -64,22 +26,69 @@
 </div>
 
 <div id="draw-content">
-        <ul class="demoToolList">
-            <li>Clear the canvas: <button id="clearCanvasSimpleColors" type="button">Clear</button></li>
-            <li><span class="highlight">Choose a color: </span><button id="choosePurpleSimpleColors" type="button">Purple</button><button id="chooseGreenSimpleColors" type="button">Green</button><button id="chooseYellowSimpleColors" type="button">Yellow</button><button id="chooseBrownSimpleColors" type="button">Brown</button></li>
-        </ul>
-        <div id="canvasSimpleColorsDiv" style="border:1px solid; width: 500px; height:300px;">
-        </div>
-<div>
+    <ul class="demoToolList">
+        <li>Clear the canvas: <button id="clearCanvasSimpleColors" type="button">Clear</button></li>
+        <li><span class="highlight">Choose a color: </span><button id="choosePurpleSimpleColors" type="button">Purple</button><button id="chooseGreenSimpleColors" type="button">Green</button><button id="chooseYellowSimpleColors" type="button">Yellow</button><button id="chooseBrownSimpleColors" type="button">Brown</button></li>
+    </ul>
+    <div id="canvasSimpleColorsDiv" style="border:1px solid; display: none;">
+    </div>
+</div>
 
 <div id="chat"><p>Connecting...</p></div>
 <form id="form" onsubmit="send(); return false">
     <input type="text" autocomplete="off" id="text">
     <input type="submit" value="Send">
 </form>
+<script>
 
 
+    var totalLoadResources = 1;
+    var curLoadResNum = 0;
+
+
+    var colorPurple = "#cb3594";
+    var colorGreen = "#659b41";
+    var colorYellow = "#ffcf33";
+    var colorBrown = "#986928";
+    var backgroundImage = new Image();
+
+    var clickX_simpleColors = new Array();
+    var clickY_simpleColors = new Array();
+    var clickDrag_simpleColors = new Array();
+    var clickColor_simpleColors = new Array();
+    var paint_simpleColors;
+    var canvas_simpleColors;
+    var context_simpleColors;
+    var curColor_simpleColors = colorPurple;
+
+</script>
 <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
-<script type="text/javascript" src="/media/demo6_draw.js"></script>
+<script type="text/javascript" src="/media/demo6/draw.js"></script>
+<script type="text/javascript" src="/media/demo6/sync.js"></script>
+
+<script>
+    /*var socket = new io.Socket(null, {port: {{ DEMO6_SERVER_PORT }}, rememberTransport: false});
+    socket.connect();
+    socket.on('message', function(obj){
+        if ('buffer' in obj){
+            document.getElementById('form').style.display='block';
+            document.getElementById('chat').innerHTML = '';
+
+            for (var i in obj.buffer) message(obj.buffer[i]);
+        } else message(obj);
+    });
+    */
+
+
+    var canvasWidth = 666;
+    var canvasHeight = 510;
+    var background_src = "media/upload/211/e8698dd775b4f60e1a7a4f7cb2216b1b-0.png"
+
+    prepareSimpleColorsCanvas(background_src, canvasWidth, canvasHeight);
+    //draw_send(background_src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+
+</script>
+
+
 {% endblock %}
 

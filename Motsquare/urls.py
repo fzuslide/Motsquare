@@ -44,6 +44,7 @@ urlpatterns = patterns('',
         (r'^demo5/upload/', demo5.upload),
 
         (r'^demo6.html', square.demo6),
+        (r'^ajax/demo6/', demo6.send),
         (r'^demo6/upload/', demo6.upload),
 
         )
