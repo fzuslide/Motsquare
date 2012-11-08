@@ -95,12 +95,28 @@ $(document).ready(function() {
             $('#drop-info').html( file.name  + " is uploading!");
             $('#drop-info').css({'display' : 'block'});
 
-            $.post('/demo6/upload/', dataArray[index], function(data) {
+            $.post('/demo6/upload/', dataArray[index], function(response) {
 
-                if (data.ok){
-                    alert('ok');
+                if (response.ok){
+                    var imgs = response.data.imgs;
+                    var width = response.data.size[0];
+                    var height = response.data.size[1];
+                    var __small_picarea_html = ''
+                for (var i=0;i< imgs.length;i++ ){
+                    var index = i + 1
+                __small_picarea_html += '<li><a href="javascript:shotImgView(\'' + imgs[i] + '\', \'thumbs' + index +'\');" id="thumbs' + index + '"><img src="' + imgs[i] + '" style="width:120px; height:90px"/></a></li>'
+                };
+            $("#thumbs").html(__small_picarea_html);
+            shotImgView(imgs[0], 'thumbs1');
+            canvasWidth = width;
+            canvasHeight = height;
+            background_src = imgs[0];
+
+            prepareSimpleColorsCanvas(canvasWidth, canvasHeight);
+            backgroundImage.src = imgs[0]
+
                 }else{
-                    alert('fail');
+                    alert(response.reason);
                 }
                 restartFiles();
 
@@ -124,3 +140,23 @@ $(document).ready(function() {
     $('#drop-files #upload-button .delete').click(restartFiles);
 
 });
+
+function shotImgView(url, el) {
+    $('#thumbs').find('img').removeClass('focus');
+    $("#shot_img").attr("src",url);
+    $("#"+el+" img").addClass('focus');
+
+    // disable upload
+    $('#upload-content').css({'display' : 'none'});
+    $('#draw-content').css({'display' : 'block'});
+    // refresh background
+    backgroundImage.src = url
+        clickX_simpleColors = new Array();
+    clickY_simpleColors = new Array();
+    clickDrag_simpleColors = new Array();
+    clickColor_simpleColors = new Array();
+
+};
+
+
+

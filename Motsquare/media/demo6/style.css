@@ -15,7 +15,7 @@ body {
 #form input[type=submit]:active { position: relative; top: 2px; }
 
 
-.content {
+#upload-content {
     padding: 20px;
 }
 #drop-files {
@@ -74,4 +74,10 @@ body {
 
 
 
+#smallpicarea{ width:100%; height:74px; overflow:hidden; border:1px solid #dfdfdf; margin-top:3px; background-color:#fff}
+#thumbs{ width:100%; height:74px; overflow:hidden;  background-color:#fff; float:left}
+#thumbs li{ width:92px; height:70px; display:block; background-color:#000; float:left; margin:2px 12px 2px 0px; overflow:hidden; }
+#thumbs li img{ opacity:0.5; filter: Alpha(opacity=60);}
+#thumbs li img.focus{opacity:1; filter: Alpha(opacity=100);}
+#smallpicarea .Currentpic img{ opacity:1; }
 

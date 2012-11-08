@@ -71,7 +71,7 @@ def upload(request):
             converter = DocumentConverter()    
             converter.convert(os.path.join(save_path, origin_filename),  os.path.join(save_path, file_hash + '.pdf'))
         except :
-            return HttpResponse(simplejson.dumps({'ok':False, 'reason': "Convert error!"}), mimetype="application/json")
+            return HttpResponse(simplejson.dumps({'ok':False, 'reason': "Convert Error!"}), mimetype="application/json")
 
     
 
@@ -80,11 +80,11 @@ def upload(request):
     first_png = Image.open(pngs[0])
     size = first_png.size
     if pngs:
-        pngs = map(lambda x:'upload/%s/' %(int(file_hash, 16) % 1000) + x.split('/')[-1], pngs)
+        pngs = map(lambda x:'media/upload/%s/' %(int(file_hash, 16) % 1000) + x.split('/')[-1], pngs)
         pngs.sort()
         return HttpResponse(simplejson.dumps({'ok':True,
                                               'data': {"imgs":pngs,
                                                        "size": size}}), mimetype="application/json")
     
-    return HttpResponse(simplejson.dumps({'ok':False, 'reason': "Convert error!"}), mimetype="application/json")
+    return HttpResponse(simplejson.dumps({'ok':False, 'reason': "Convert Error!"}), mimetype="application/json")
 

@@ -23,7 +23,7 @@ function resourceLoaded()
 	}
 }
 
-function prepareSimpleColorsCanvas(background_src, canvasWidth, canvasHeight)
+function prepareSimpleColorsCanvas(canvasWidth, canvasHeight)
 {
     // Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
     $('#canvasSimpleColorsDiv').css({"width": canvasWidth, "height": canvasHeight});
@@ -44,7 +44,6 @@ function prepareSimpleColorsCanvas(background_src, canvasWidth, canvasHeight)
     // -----------
     backgroundImage.onload = function() { resourceLoaded(); 
     };
-    backgroundImage.src = background_src;
 
 
 
@@ -71,13 +70,13 @@ function prepareSimpleColorsCanvas(background_src, canvasWidth, canvasHeight)
     $('#canvasSimpleColors').mouseup(function(e){
         paint_simpleColors = false;
         redrawSimpleColors();
-        draw_send(background_src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+        draw_send(backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
 
     });
 
     $('#canvasSimpleColors').mouseleave(function(e){
         paint_simpleColors = false;
-        draw_send(background_src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+        draw_send(backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
     });
 
     $('#choosePurpleSimpleColors').mousedown(function(e){
