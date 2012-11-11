@@ -25,7 +25,7 @@
 </div>
 
 <div id="draw-content" style="display:none" >
-    <ul class="demoToolList">
+    <ul class="demoToolList" style="display:none">
         <li>Clear the canvas: <button id="clearCanvasSimpleColors" type="button">Clear</button></li>
         <li><span class="highlight">Choose a color: </span><button id="choosePurpleSimpleColors" type="button">Purple</button><button id="chooseGreenSimpleColors" type="button">Green</button><button id="chooseYellowSimpleColors" type="button">Yellow</button><button id="chooseBrownSimpleColors" type="button">Brown</button></li>
     </ul>
@@ -95,7 +95,6 @@
                     message(obj);
                     break
                 case "Draw":
-                    console.log(obj);
                     sync_draw(obj);
                     break
                 default:

@@ -92,7 +92,7 @@ $(document).ready(function() {
         $('#upload-info').css({'display' : 'none'});
 
         $.each(dataArray, function(index, file) {	
-            $('#drop-info').html( file.name  + " is uploading!");
+            $('#drop-info').html( file.name  + " uploading!");
             $('#drop-info').css({'display' : 'block'});
 
             $.post('/demo6/upload/', dataArray[index], function(response) {
@@ -105,16 +105,16 @@ $(document).ready(function() {
                     backGrounds = imgs;
                 for (var i=0;i< imgs.length;i++ ){
                     var index = i + 1
-                __small_picarea_html += '<li><a href="javascript:shotImgView(\'' + imgs[i] + '\', \'thumbs' + index +'\');" id="thumbs' + index + '"><img src="' + imgs[i] + '" style="width:120px; height:90px"/></a></li>'
+                __small_picarea_html += '<li><a href="javascript:shotImgView(\'' + imgs[i] + '\', \'thumbs' + index +'\', true, true);" id="thumbs' + index + '"><img src="' + imgs[i] + '" style="width:120px; height:90px"/></a></li>'
                 };
             $("#thumbs").html(__small_picarea_html);
-            shotImgView(imgs[0], 'thumbs1');
+
             canvasWidth = width;
             canvasHeight = height;
-            background_src = imgs[0];
-
+            backgroundImage.src = imgs[0];
+            shotImgView(imgs[0], 'thumbs1', true, false);
+            console.log(backgroundImage.src);
             prepareSimpleColorsCanvas(canvasWidth, canvasHeight);
-            backgroundImage.src = imgs[0]
 
                 }else{
                     alert(response.reason);
@@ -142,7 +142,7 @@ $(document).ready(function() {
 
 });
 
-function shotImgView(url, el) {
+function shotImgView(url, el, sync, refresh) {
     $('#thumbs').find('img').removeClass('focus');
     $("#shot_img").attr("src",url);
     $("#"+el+" img").addClass('focus');
@@ -152,11 +152,18 @@ function shotImgView(url, el) {
     $('#draw-content').css({'display' : 'block'});
 
     // refresh background
-    backgroundImage.src = url;
-    clickX_simpleColors = new Array();
-    clickY_simpleColors = new Array();
-    clickDrag_simpleColors = new Array();
-    clickColor_simpleColors = new Array();
+    if (refresh){
+        backgroundImage.src = url;
+        clickX_simpleColors = new Array();
+        clickY_simpleColors = new Array();
+        clickDrag_simpleColors = new Array();
+        clickColor_simpleColors = new Array();
+    }
+
+
+    if (sync) {
+        draw_send(true, backGrounds, backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+    };
 
 };
 

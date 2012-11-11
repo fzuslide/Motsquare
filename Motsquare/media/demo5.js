@@ -91,7 +91,7 @@ $(document).ready(function() {
 		$('#upload-button').hide();
 		
 		$.each(dataArray, function(index, file) {	
-                        $('#drop-info').html( file.name  + " is uploading!");
+                        $('#drop-info').html( file.name  + " uploading!");
                         $('#drop-info').css({'display' : 'block'});
 			
 			$.post('/demo5/upload/', dataArray[index], function(data) {

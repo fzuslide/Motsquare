@@ -26,6 +26,8 @@ function resourceLoaded()
 function prepareSimpleColorsCanvas(canvasWidth, canvasHeight)
 {
     // Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
+    console.log(canvasWidth);
+    console.log(canvasHeight);
     $('#canvasSimpleColorsDiv').css({"width": canvasWidth, "height": canvasHeight});
     $('#canvasSimpleColorsDiv').show()
     var canvasDiv = document.getElementById('canvasSimpleColorsDiv');
@@ -70,13 +72,13 @@ function prepareSimpleColorsCanvas(canvasWidth, canvasHeight)
     $('#canvasSimpleColors').mouseup(function(e){
         paint_simpleColors = false;
         redrawSimpleColors();
-        draw_send(backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+        draw_send(false, backGrounds, backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
 
     });
 
     $('#canvasSimpleColors').mouseleave(function(e){
         paint_simpleColors = false;
-        draw_send(backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
+        draw_send(false, backGrounds, backgroundImage.src, canvasWidth, canvasHeight, clickX_simpleColors, clickY_simpleColors, clickDrag_simpleColors, clickColor_simpleColors);
     });
 
     $('#choosePurpleSimpleColors').mousedown(function(e){
