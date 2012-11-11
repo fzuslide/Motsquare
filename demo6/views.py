@@ -1,51 +1,32 @@
-#coding=utf-8
-
-import time
-from redis import Redis
-
-from gevent.greenlet import Greenlet
 from django.http import HttpResponse
-from django.utils import simplejson
-
 
 buffer = []
 
-class Subscriber(object):
-    def __init__(self):
-        self.red = Redis(host='127.0.0.1', port=6379)
-        self.client = self.red.pubsub()
-
-    def subscribe(self, channel):
-        self.client.subscribe(channel)
-
-    def listen(self):
-        return self.client.listen()
-
-
 def socketio(request):
     socketio = request.environ['socketio']
-    subscriber = Subscriber()
     if socketio.on_connect():
         socketio.send({'buffer': buffer})
-        socketio.broadcast({'announcement': socketio.session.session_id + ' connected'})
-    
-    is_connected = True
-    while is_connected:
-        try:
-            subscriber.subscribe('ch:demo6')
-            for msg in subscriber.listen():
-                if not socketio.connected():
-                    is_connected = False
-                else:
-                    data = msg.get('data')
-                    if data and isinstance(data, str):
-                        envelope = simplejson.loads(data)
-                        socketio.send({'message': envelope})
-        except Exceptoin,e :
-            pass
+        socketio.broadcast({'msg_type': 'Chat', 'announcement': socketio.session.session_id + ' connected'})
 
-        time.sleep(10)
-        if not is_connected:
-            socketio.broadcast({'announcement': socketio.session.session_id + ' disconnected'})
+    while True:
+        message = socketio.recv()
+
+        if len(message) == 1:
+            message = message[0]
+            if message.get("msg_type") == "Draw":
+                pass
+            elif message.get("msg_type") == "Chat":
+                message.update({'content': [socketio.session.session_id, message.get("content")]})
+                buffer.append(message)
+
+            if len(buffer) > 15:
+                del buffer[0]
+                pass
+            socketio.broadcast(message)
+            #socketio.send(message)
+        else:
+            if not socketio.connected():
+                socketio.broadcast({'msg_type': 'Chat', 'announcement': socketio.session.session_id + ' connected'})
+                break
 
     return HttpResponse()

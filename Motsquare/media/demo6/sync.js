@@ -1,29 +1,28 @@
 function message(obj){
     var el = document.createElement('p');
     if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
-    else if ('message' in obj) el.innerHTML = '<b>MsgID:' + esc(obj.message.id) + '</b> Content: ' + esc(obj.message.msg);
+    else if ('content' in obj) el.innerHTML = '<b>' + esc(obj.content[0]) + ':</b> ' + esc(obj.content[1]);
     document.getElementById('chat').appendChild(el);
     document.getElementById('chat').scrollTop = 1000000;
 }
+ 
 
 function send(){
     var val = document.getElementById('text').value;
-    $.post('ajax/demo6/', {msg_type: "chat", msg: val }, function(response) {
-        if (response.ok){
-            document.getElementById('text').value = '';
-        } else {
-            alert('send error');
-        }
+    chat_data = {'msg_type': 'Chat', content:  val }
+    socket.send(chat_data);
+    message({ content: ['you', val] });
 
-    });
+    document.getElementById('text').value = '';
 }
+
 
 function esc(msg){
     return String(msg).replace(/</g, '&lt;').replace(/>/g, '&gt;');
 };
 
 function draw_send(background_src, width, height, x, y, drag, color){
-    var send_data = {msg_type: "draw",
+    var draw_data = {msg_type: "Draw",
                      background_src: background_src,
                      width: width,
                      height: height,
@@ -32,9 +31,10 @@ function draw_send(background_src, width, height, x, y, drag, color){
                      drag: drag,
                      color: color,
     };
-    $.post('ajax/demo6/', send_data, function(response) {
-        // send draw info
-    });
+    socket.send(draw_data);
 
 };
 
+
+function sync_draw(obj){
+};

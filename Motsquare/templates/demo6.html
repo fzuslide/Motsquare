@@ -59,6 +59,7 @@
     var colorBrown = "#986928";
     var backgroundImage = new Image();
 
+    var backGrounds = new Array();
     var clickX_simpleColors = new Array();
     var clickY_simpleColors = new Array();
     var clickDrag_simpleColors = new Array();
@@ -81,8 +82,27 @@
             document.getElementById('form').style.display='block';
             document.getElementById('chat').innerHTML = '';
 
-            for (var i in obj.buffer) message(obj.buffer[i]);
-        } else message(obj);
+            for (var i in obj.buffer) {
+                if (obj.buffer[i].msg_type == 'Chat'){
+                    message(obj.buffer[i]);
+                };
+
+            };
+        }
+        else if ('msg_type' in obj) {
+            switch(obj.msg_type) {
+                case "Chat":
+                    message(obj);
+                    break
+                case "Draw":
+                    console.log(obj);
+                    sync_draw(obj);
+                    break
+                default:
+                    console.log('fault msg_type');
+                    console.log(obj);
+            };
+        };
     });
 </script>
 

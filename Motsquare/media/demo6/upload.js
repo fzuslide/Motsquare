@@ -101,7 +101,8 @@ $(document).ready(function() {
                     var imgs = response.data.imgs;
                     var width = response.data.size[0];
                     var height = response.data.size[1];
-                    var __small_picarea_html = ''
+                    var __small_picarea_html = '';
+                    backGrounds = imgs;
                 for (var i=0;i< imgs.length;i++ ){
                     var index = i + 1
                 __small_picarea_html += '<li><a href="javascript:shotImgView(\'' + imgs[i] + '\', \'thumbs' + index +'\');" id="thumbs' + index + '"><img src="' + imgs[i] + '" style="width:120px; height:90px"/></a></li>'
@@ -149,9 +150,10 @@ function shotImgView(url, el) {
     // disable upload
     $('#upload-content').css({'display' : 'none'});
     $('#draw-content').css({'display' : 'block'});
+
     // refresh background
-    backgroundImage.src = url
-        clickX_simpleColors = new Array();
+    backgroundImage.src = url;
+    clickX_simpleColors = new Array();
     clickY_simpleColors = new Array();
     clickDrag_simpleColors = new Array();
     clickColor_simpleColors = new Array();
